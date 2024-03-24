@@ -29,6 +29,11 @@ In the words of Stephen Hawking:
 
 # Updates
 
+### DLTGUI Version 1.0.10
+- Bug Fixes (There was a problem about calculation of training steps per epoch).
+- Update tensorflow version to 2.10.1, and after 2.10 version TF don't support GPU on Windows Native.
+- Update syntax accordingly.
+
 ### DLTGUI Version 1.0.9
 - Bug Fixes (There was a problem about showing heatmap  for Cuda >= 10.0, fixed). 
 
