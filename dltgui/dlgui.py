@@ -93,7 +93,9 @@ class dl_gui:
         self.train_data_gen = image_generator.flow_from_directory(directory=self.data_dir,
                                                             batch_size=self.batch_size,
                                                             shuffle=True,
-                                                            target_size=(self.IMG_HEIGHT, self.IMG_WIDTH),
+                                                            #target_size=(self.IMG_HEIGHT, self.IMG_WIDTH),
+                                                            target_size=(14, 14),
+                                                            color_mode='grayscale',
                                                             classes = list(self.CLASS_NAMES),
                                                             subset='training')
         self.STEPS_PER_EPOCH = np.ceil(self.train_data_gen.samples/self.batch_size)
@@ -101,17 +103,19 @@ class dl_gui:
         self.test_data_gen = image_generator.flow_from_directory(directory=str(self.data_dir),
                                                             batch_size=self.batch_size,
                                                             shuffle=True,
-                                                            target_size=(self.IMG_HEIGHT, self.IMG_WIDTH),
+                                                            #target_size=(self.IMG_HEIGHT, self.IMG_WIDTH),
+                                                            target_size=(14, 14),
+                                                            color_mode='grayscale',
                                                             classes = list(self.CLASS_NAMES),
                                                             subset='validation')
-
+        print (self.train_data_gen.color_mode, self.train_data_gen.samples, self.test_data_gen.samples)
         self.VALID_STEPS_PER_EPOCH = np.ceil(self.test_data_gen.samples/self.batch_size)
         
         # image_batch, label_batch = next(train_data_gen)
         # self.show_batch(image_batch, label_batch)
 
     def prepare_image(self, img):
-        img = tf.keras.preprocessing.image.load_img(img, target_size=(224, 224))
+        img = tf.keras.preprocessing.image.load_img(img, target_size=(14, 14), grayscale=True)
         img_array = tf.keras.preprocessing.image.img_to_array(img)     
         img_array_expanded_dims = np.expand_dims(img_array, axis=0)
         return tf.keras.applications.mobilenet_v2.preprocess_input(img_array_expanded_dims)
@@ -261,7 +265,7 @@ class dl_gui:
                     global_average_layer,
                     prediction_layer
                     ])
-                    model.compile(optimizer='adam',
+                    model.compile(optimiSzer='adam',
                     loss='binary_crossentropy',
                     metrics=['accuracy'])
                 else:
@@ -445,7 +449,53 @@ class dl_gui:
                     loss='categorical_crossentropy',
                     metrics=['accuracy'])
 
-                
+                tensorboard = tf.keras.callbacks.TensorBoard(log_dir='logs', histogram_freq=0,
+                            write_graph=True, write_images=False)
+                Process(target=startTensorboard, args=("logs",)).start()
+                history = model.fit_generator(
+                    self.train_data_gen,
+                    steps_per_epoch=self.STEPS_PER_EPOCH,
+                    validation_data = self.test_data_gen,
+                    validation_steps = self.VALID_STEPS_PER_EPOCH,
+                    epochs=self.epoch,
+                    callbacks=[tensorboard])
+                model.save('models/{}.h5'.format(self.project_name))
+
+            elif self.pre_trained_model == "MnistCnnModel":
+                if self.noc == 2:
+                    model = Sequential([
+                        Conv2D(4, 3, activation='relu', input_shape=(14,14,1)),
+                        MaxPooling2D(),
+                        Flatten(),
+                        Dense(4, activation='relu'),
+                        Dense(self.noc, activation = self.activation_function)
+
+                    # GOOD   Flatten(input_shape=(14,14,1)),
+                    # GOOD   Dense(4, activation='relu'),
+                    # GOOD    Dense(self.noc, activation = self.activation_function)
+                    ])
+                    model.summary()
+                    model.compile(optimizer='adam',
+                        loss='binary_crossentropy',
+                        metrics=['accuracy'])
+
+                else:
+                    model = Sequential([
+                        Conv2D(16, 3, padding='same', activation='relu', input_shape=(224,224,3)),
+                        MaxPooling2D(),
+                        Conv2D(32, 3, padding='same', activation='relu'),
+                        MaxPooling2D(),
+                        Conv2D(64, 3, padding='same', activation='relu'),
+                        MaxPooling2D(),
+                        Flatten(),
+                        Dropout(0.5),
+                        Dense(64, activation='relu'),
+                        Dense(self.noc, activation = 'softmax')
+                    ])
+                    model.compile(optimizer='adam',
+                    loss='categorical_crossentropy',
+                    metrics=['accuracy'])
+
                 tensorboard = tf.keras.callbacks.TensorBoard(log_dir='logs', histogram_freq=0,
                             write_graph=True, write_images=False)
                 Process(target=startTensorboard, args=("logs",)).start()
@@ -457,7 +507,6 @@ class dl_gui:
                     epochs=self.epoch,
                     callbacks=[tensorboard])
                 model.save('models/{}.h5'.format(self.project_name)) 
-   
     
 
    
