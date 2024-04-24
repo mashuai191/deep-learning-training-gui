@@ -8,7 +8,7 @@
 # # # # # # # # # # # # # # # 
 
 import numpy as np
-from multiprocessing import Process
+from multiprocessing import Process, freeze_support
 import threading
 from flask import Flask, request, jsonify, render_template
 from dltgui.dlgui import dl_gui
@@ -71,6 +71,8 @@ def terminal():
       zoom = result['zoom']
       fine_tuning = result['fine_tuning']
       fine_tune_epochs = result['fine_tune_epochs']
+      img_height = result['img_height']
+      img_width = result['img_height']
       gui = dl_gui(dataset=dataset, 
                    project_name = str(project_name), 
                    split_dataset = float(split_dataset), 
@@ -80,7 +82,9 @@ def terminal():
                    batch_size = int(batch_size), 
                    epoch = int(epoch),
                    activation_function = activation_function,
-                   fine_tune_epochs = int(fine_tune_epochs))
+                   fine_tune_epochs = int(fine_tune_epochs),
+                   img_height=int(img_height),
+                   img_width=int(img_width))
 
       if(flip == "True" or rotation == "True" or zoom == "True"):
           samples = result['samples']
@@ -132,6 +136,7 @@ def test():
 
 
 if __name__ == "__main__":
+    freeze_support()
     app.run(debug=True)
    
    

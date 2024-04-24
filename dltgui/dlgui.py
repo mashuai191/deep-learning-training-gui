@@ -46,7 +46,8 @@ def startTensorboard(logdir):
 class dl_gui:
     
     "Version 1.0 This version, allows you to train image classification model easily"
-    def __init__(self, project_name, dataset, split_dataset = 0.20, pre_trained_model = 'MobileNetV2', cpu_gpu='', number_of_classes = 5, batch_size = 16, epoch = 1, activation_function ='', fine_tune_epochs = 10):
+    def __init__(self, project_name, dataset, split_dataset = 0.20, pre_trained_model = 'MobileNetV2', cpu_gpu='', number_of_classes = 5, batch_size = 16, epoch = 1, activation_function ='', fine_tune_epochs = 10,
+                 img_height=224, img_width=224):
          self.project_name = project_name
          self.data_dir = pathlib.Path(dataset)
          self.split_dataset = split_dataset
@@ -56,7 +57,7 @@ class dl_gui:
          self.batch_size = batch_size
          self.epoch = epoch
          self.activation_function = activation_function
-         self.IMG_HEIGHT, self.IMG_WIDTH = 224, 224
+         self.IMG_HEIGHT, self.IMG_WIDTH = img_height, img_width
          self.CLASS_NAMES = np.array([item.name for item in self.data_dir.glob('*') if item.name != "LICENSE.txt"])
          self.fine_tune_epochs = fine_tune_epochs
          
@@ -93,8 +94,8 @@ class dl_gui:
         self.train_data_gen = image_generator.flow_from_directory(directory=self.data_dir,
                                                             batch_size=self.batch_size,
                                                             shuffle=True,
-                                                            #target_size=(self.IMG_HEIGHT, self.IMG_WIDTH),
-                                                            target_size=(14, 14),
+                                                            target_size=(self.IMG_HEIGHT, self.IMG_WIDTH),
+                                                            #target_size=(14, 14),
                                                             color_mode='grayscale',
                                                             classes = list(self.CLASS_NAMES),
                                                             subset='training')
@@ -103,8 +104,8 @@ class dl_gui:
         self.test_data_gen = image_generator.flow_from_directory(directory=str(self.data_dir),
                                                             batch_size=self.batch_size,
                                                             shuffle=True,
-                                                            #target_size=(self.IMG_HEIGHT, self.IMG_WIDTH),
-                                                            target_size=(14, 14),
+                                                            target_size=(self.IMG_HEIGHT, self.IMG_WIDTH),
+                                                            #target_size=(14, 14),
                                                             color_mode='grayscale',
                                                             classes = list(self.CLASS_NAMES),
                                                             subset='validation')
@@ -464,7 +465,7 @@ class dl_gui:
             elif self.pre_trained_model == "MnistCnnModel":
                 if self.noc == 2:
                     model = Sequential([
-                        Conv2D(4, 3, activation='relu', input_shape=(14,14,1)),
+                        Conv2D(4, 3, activation='relu', input_shape=(self.IMG_HEIGHT,self.IMG_WIDTH,1)),
                         MaxPooling2D(),
                         Flatten(),
                         Dense(4, activation='relu'),
@@ -481,7 +482,7 @@ class dl_gui:
 
                 else:
                     model = Sequential([
-                        Conv2D(16, 3, padding='same', activation='relu', input_shape=(224,224,3)),
+                        Conv2D(16, 3, padding='same', activation='relu', input_shape=(self.IMG_HEIGHT,self.IMG_WIDTH,3)),
                         MaxPooling2D(),
                         Conv2D(32, 3, padding='same', activation='relu'),
                         MaxPooling2D(),

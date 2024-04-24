@@ -26,8 +26,14 @@ In the words of Stephen Hawking:
 ![Before Training](https://github.com/mustafamerttunali/Deep-Learning-Training-GUI/blob/master/doc_images/before_training.gif
 ) 
 
+PLEASE NOTE: THis is forked from https://github.com/mustafamerttunali/Deep-Learning-Training-GUI.
+
 
 # Updates
+
+### DLTGUI Version 1.1.0
+- Since this version it is maintained by www.hei-ya.com
+- As it is maintained by hei-ya.com so it will be specific, but we also try to make as generic as possible
 
 ### DLTGUI Version 1.0.10
 - Bug Fixes (There was a problem about calculation of training steps per epoch).
