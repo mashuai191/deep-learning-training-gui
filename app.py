@@ -7,6 +7,9 @@
 # ---------------------------
 # # # # # # # # # # # # # # # 
 
+from io import BytesIO
+import os
+from PIL import Image
 import numpy as np
 from multiprocessing import Process, freeze_support
 import threading
@@ -108,7 +111,7 @@ def result():
         result = request.form
         dataset = result['dataset']
         model_dir= result['model']
-        img = result['img'] 
+        img = result['img']
         gui = dl_gui(project_name = "Test", dataset=dataset)
         predicted_class, max_pred, show_heatmap, img_name = gui.predict(img, model_dir)
         return render_template('result.html', result = result, img = img, max_pred = max_pred, predicted_class = predicted_class, show_heatmap = show_heatmap, img_name = img_name,  mimetype="text/event-stream")
@@ -133,6 +136,28 @@ def test():
       print("Flip:   ", flip, rotation,zoom)
       return "Testing page - look at the conda terminal for values.."
 
+@app.route('/upload', methods=['POST'])
+def upload():
+    if 'file' not in request.files:
+        return 'No file part'
+
+    file = request.files['file']
+
+    if file.filename == '':
+        return 'No selected file'
+
+    if file:
+        # Read the image file and convert it to PIL format
+        img = Image.open(BytesIO(file.read()))
+
+        # if not os.path.exists('uploads'):
+        #     os.makedirs('uploads')
+        # Do something with the PIL image (e.g., save it, process it, etc.)
+        img.save('static/'+ file.filename)  # Save the image
+
+        return 'Image uploaded successfully'
+
+    return 'Upload failed'
 
 
 if __name__ == "__main__":

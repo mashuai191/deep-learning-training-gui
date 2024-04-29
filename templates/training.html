@@ -166,14 +166,13 @@
           danger_div.style.display = "none";
           success_div.style.display = "none";
         }
-
       }
       
       </script>
       <br>
       Data Augmentation
       <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="True" name="flip" id="flip"onclick="dataAug()">
+      <input disabled class="form-check-input" type="checkbox" value="True" name="flip" id="flip" onclick="dataAug()">
       <input class="form-check-input" type="hidden" value="False" name="flip" id="flip_hidden">
       <label class="form-check-label" for="flip" >
       Flipping 
@@ -181,16 +180,15 @@
       </div>
 
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="True" name="rotation" id="Rotation" onclick="dataAug()" >
+        <input disabled class="form-check-input" type="checkbox" value="True" name="rotation" id="Rotation" onclick="dataAug()" >
         <input class="form-check-input" type="hidden" value="False" name="rotation" id="rotation_hidden" >
         <label class="form-check-label" for="Rotation" >
           Rotation 
         </label>
         </div>
-
   
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="True" name="zoom" id="Zoom" onclick="dataAug()">
+        <input disabled class="form-check-input" type="checkbox" value="True" name="zoom" id="Zoom" onclick="dataAug()">
         <input class="form-check-input" type="hidden" value="False" name="zoom" id="zoom_hidden" >
         <label class="form-check-label" for="Zoom" >
          Zoom 
@@ -258,7 +256,7 @@
       <br>
       Fine-Tuning
       <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="True" name="fine_tuning" id="fine_tuning" onclick="fine_tuning_check()" >
+        <input disabled class="form-check-input" type="checkbox" value="True" name="fine_tuning" id="fine_tuning" onclick="fine_tuning_check()" >
         <input class="form-check-input" type="hidden" value="False" name="fine_tuning" id="fine_tuning_hidden" >
         <label class="form-check-label" for="fine_tuning" >
           Activate
@@ -329,12 +327,12 @@
       Pre-trained Models *
       <select class="form-control form-control-sm" name="Pre-trained Model">
         <option>MnistCnnModel</option>
-        <option>MobileNetV2</option>
-        <option>InceptionV3</option>
-        <option>VGG16</option>
-        <option>VGG19</option>
-        <option>NASNetMobile</option>
-        <option>SimpleCnnModel</option>
+        <option disabled>MobileNetV2</option>
+        <option disabled>InceptionV3</option>
+        <option disabled>VGG16</option>
+        <option disabled>VGG19</option>
+        <option disabled>NASNetMobile</option>
+        <option disabled>SimpleCnnModel</option>
       </select>
 
       <br>
@@ -452,7 +450,8 @@
  </div>
 <br>
 
-<footer style="text-align: center;">Built by <a href="http://www.hei-ya.com" target="_blank">成都黑亚科技有限公司</a>, Version 1.1.0</footer>
+<!-- <footer style="text-align: center;">Built by <a href="http://www.hei-ya.com" target="_blank">成都黑亚科技有限公司</a>, Version 1.1.0</footer> -->
+<footer style="text-align: center;">Version 1.1.0</footer>
       
 </div>
 
@@ -475,7 +474,10 @@
 
   
   </script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+<script type="text/javascript" src="{{url_for('static', filename='js/jquery-3.3.1.slim.min.js')}}" crossorigin="anonymous"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
+<script src="{{url_for('static', filename='js/popper.min.js')}}" crossorigin="anonymous"></script>
+<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
+<script type="text/javascript" src="{{url_for('static', filename='js/bootstrap.min.js')}}" integrity="sha384-lXqCKSCzpmJ9kRbg4c4nQHayMEuwgwGO+SmKQlcp/OuWw054bPqQcHRK9yyRbKpS" crossorigin="anonymous"></script>
 </html>
