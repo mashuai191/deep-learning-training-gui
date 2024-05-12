@@ -5,16 +5,9 @@
 "https://image.flaticon.com/icons/png/512/2043/premium/2043014.png" 
         type = "image/x-icon"> 
 <script src="https://kit.fontawesome.com/c5ffb49d8a.js" crossorigin="anonymous"></script>
-<meta http-equiv="cache-control" content="no-cache" />
-<meta http-equiv="Pragma" content="no-cache" />
-<title >DLTG - Prediction</title>
-
-
-    
+<title >DLTG - Prediction</title>   
 <body>
-
 <div class="container-fluid">
-       
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="/"><i class="fas fa-infinity"></i> 深度学习训练系统</a>
@@ -26,92 +19,69 @@
                 <a class="nav-item nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 <a class="nav-item nav-link" href="training" >Training</a>
                 <a class="nav-item nav-link active" href="predict" >Predict</a>
+                <a class="nav-item nav-link" href="convert" >ConvertToCC</a>
               </div>
             </div>
           </nav>
     </header>
 
-    
-
     <div class="jumbotron">
-        <h1 class="display-4" style="text-align: center;">Result </h1>
-      </div>
-
-<div class="row">
-
-  <div class="col-md-4">
-    <img src="{{url_for('static', filename= img)}}" class="img-fluid" style="height: 350px; width:100%;" alt="Image">
-
-  </div>
-
-  
-
-
-  <br>
-  <div class="col-md-5 border">
-    <h4 class="display-4" style="text-align: center;">Accuracy
-    </h4>
-
-    <br>
-
-  
-
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" style="width: {{  max_pred }}%"  aria-valuemin="0" aria-valuemax="100">{{  max_pred }}% - {{predicted_class}}</div>
+        <h1 class="display-4" style="text-align: center;">转换 TF 模型为 CC 格式</h1>
+        <p style="text-align: center;font-size: 14px;"><i class="fas fa-exclamation-triangle"></i> Load your model that you trained,
+        and convert it to CC format</p>
     </div>
 
-    <br>
+    <form action = "http://localhost:5000/convert" method = "POST">
+      <div class="row" style="text-align: center; ">
+        <div class="col-md-12">
+          <div class="col-md-12">
+              <div class="file-field">
+                <div class="btn btn-warning btn-sm">
+                  <span>Choose a model</span>
+                    <input type="file" name="model">
+                </div>
+                </div>
+            </div>
+        </div>
+      <div class="col-md-12">
+      <br>
 
-    <div class="progress">
-      <div class="progress-bar" role="progressbar" style="width: {{  100-max_pred }}%"  aria-valuemin="0" aria-valuemax="100">{{  100-max_pred }}% - others</div>
+
+
+        <div class="col-md-12">
+          <br>
+          <div class="col-md-12">
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <input class="btn btn-outline-primary" type = "submit" value = "Convert Your Model" /> 
+                </div>
+            </div>
+         </div>
+
+    </form>
+
+    <div class="col-md-12">
+      <br>
+      <br>
     </div>
 
-    <br>
-    <br>
-    
-    <h5 class="display-5"><i class="far fa-file-image"></i> Image Name: <strong>{{  result['img'] }} </strong>  </h5>
-    <h5 class="display-5"><i class="fas fa-brain"></i>      Model Name: <strong>{{  result['model'] }}</strong>  </h5>
-
-    <br>
-
-    
-
-    <div class="btn-group" role="group" aria-label="Basic example">
-      
-      <a class="btn btn-outline-primary" href="predict">Try Again?</a>
-    
-    </div>
-
-
-</div>
-<div class="col-md-3 border">
-
-{% if show_heatmap == True %}
-
-        <div><img src="{{url_for('static', filename= img_name)}}" class="img-fluid" alt="Image"  id= "imgID"style="height: 350px; width: 100%;"  ></div>
-    {% else %}
-
-    <h5 class="display-4" style="text-align: center;">Activation map is not available for your model. Use MobileNetV2.</h5>
-
+    {% if model_h_name %}
+      <div class="alert alert-success" role="alert">{{ model_h_name }} generated </div>
     {% endif %}
-  
-   <p>{{img_name}}</p>
-</div>
-
-</div>
-<br>
-<br>            
-<!-- <footer style="text-align: center;">Built by <a href="http://www.hei-ya.com" target="_blank">成都黑亚科技有限公司</a>, Version 1.1.0</footer> -->
-<footer style="text-align: center;">Version 1.1.0</footer>
+    
 
 
+    <!-- <footer style="text-align: center;">Built by <a href="http://www.hei-ya.com" target="_blank">成都黑亚科技有限公司 </a>, Version 1.1.0</footer> -->
+    <footer style="text-align: center;">Version 1.1.0</footer>
+
+</div> 
 
 </body>
-
 <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
 <script type="text/javascript" src="{{url_for('static', filename='jquery-3.3.1.slim.min.js')}}" crossorigin="anonymous"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script> -->
 <script src="{{url_for('static', filename='popper.min.js')}}" crossorigin="anonymous"></script>
 <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script> -->
 <script src="{{url_for('static', filename='bootstrap.min.js')}}" integrity="sha384-lXqCKSCzpmJ9kRbg4c4nQHayMEuwgwGO+SmKQlcp/OuWw054bPqQcHRK9yyRbKpS" crossorigin="anonymous"></script>
+
+
 </html>

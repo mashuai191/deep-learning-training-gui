@@ -16,8 +16,7 @@ import threading
 from flask import Flask, request, jsonify, render_template
 from dltgui.dlgui import dl_gui
 import tensorflow as tf
-
-
+import binascii
 
 
 
@@ -101,6 +100,39 @@ def terminal():
 @app.route('/predict')
 def predict():
     return render_template('predict.html')
+
+@app.route('/convert', methods = ['GET', 'POST'])
+def convert2TFlite():
+    def convert_to_c_array(bytes) -> str:
+        hexstr = binascii.hexlify(bytes).decode("UTF-8")
+        hexstr = hexstr.upper()
+        array = ["0x" + hexstr[i:i + 2] for i in range(0, len(hexstr), 2)]
+        array = [array[i:i+10] for i in range(0, len(array), 10)]
+        return ",\n  ".join([", ".join(e) for e in array])
+
+    if request.method == 'GET':
+        return render_template('convert.html')
+    elif request.method == 'POST':
+        result = request.form
+        model_name= result['model']
+        if model_name and model_name.endswith('h5'):
+            model01 = tf.keras.models.load_model('models/' + model_name)
+            converter = tf.lite.TFLiteConverter.from_keras_model(model01)
+            tflite_model = converter.convert()
+            model_lite_name = 'models/'+ os.path.splitext(model_name)[0]+ '.tflite'
+            open(model_lite_name, "wb").write(tflite_model)
+            # convert tflite format to cc file
+            tflite_binary = open(model_lite_name, 'rb').read()
+            ascii_bytes = convert_to_c_array(tflite_binary)
+            c_file = "const unsigned char tf_model[] = {\n  " + ascii_bytes + "\n};\nunsigned int tf_model_len = " + str(len(tflite_binary)) + ";"
+            #print(c_file)
+            model_h_name = 'models/'+ os.path.splitext(model_name)[0]+ '.h'
+            open(model_h_name, "w").write(c_file)
+            os.remove(model_lite_name)
+            model_name = ''
+        else:
+            model_lite_name = ''
+        return render_template('convert.html', model_h_name = model_h_name)
 
 @app.route('/result', methods = ['POST'])
 def result():
