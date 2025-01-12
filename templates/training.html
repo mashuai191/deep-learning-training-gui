@@ -22,7 +22,7 @@
                 <a class="nav-item nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 <a class="nav-item nav-link active" href="training" >Training</a>
                 <a class="nav-item nav-link" href="predict" >Predict</a>
-                <a class="nav-item nav-link" href="convert2" >ConvertToCC</a>
+                <a class="nav-item nav-link" href="convert" >ConvertToCC</a>
               </div>
             </div>
           </nav>
@@ -257,7 +257,7 @@
       <br>
       Fine-Tuning
       <div class="form-check">
-        <input disabled class="form-check-input" type="checkbox" value="True" name="fine_tuning" id="fine_tuning" onclick="fine_tuning_check()" >
+        <input class="form-check-input" type="checkbox" value="True" name="fine_tuning" id="fine_tuning" onclick="fine_tuning_check()" >
         <input class="form-check-input" type="hidden" value="False" name="fine_tuning" id="fine_tuning_hidden" >
         <label class="form-check-label" for="fine_tuning" >
           Activate
@@ -433,7 +433,6 @@
 
           <div class="btn-group" role="group" aria-label="Basic example">
             <input class="btn btn-outline-primary" type = "submit" value = "Start Training!"/>  
-            
           
           </div>
 
@@ -452,7 +451,7 @@
 <br>
 
 <!-- <footer style="text-align: center;">Built by <a href="http://www.hei-ya.com" target="_blank">成都黑亚科技有限公司</a>, Version 1.1.0</footer> -->
-<footer style="text-align: center;">Version 1.1.0</footer>
+{% include 'footer.html' %}
       
 </div>
 
